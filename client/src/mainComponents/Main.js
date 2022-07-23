@@ -12,13 +12,15 @@ const Main = () => {
         <Wrapper>
             <Current />
             <Dates />
-            <Form />
-            <MapOfQc />
+            {/* <Form /> */}
+            {/* <MapOfQc /> */}
         </Wrapper>
     )
 }
 
 const Wrapper = styled.main`
+    background-color: var(--c-light);
+    padding: 20px;
 `
 
 export default Main;

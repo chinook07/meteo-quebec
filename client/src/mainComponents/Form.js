@@ -1,6 +1,5 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { getDay, getDate } from "date-fns";
 
 const Form = () => {
 
@@ -12,22 +11,26 @@ const Form = () => {
 
     const chooseCity = (e) => {
         e.preventDefault();
-        console.log(townEntered);
-        fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${townEntered}&limit=3&appid=c77a7a4b3db833e991269e38c96f8d5d&units=metric&lang=fr`)
-            .then(res => res.json())
-            .then(data => setTownChoices(data))
+        if (townEntered !== "") {
+            console.log(townEntered);
+            fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${townEntered}&limit=3&appid=c77a7a4b3db833e991269e38c96f8d5d&units=metric&lang=fr`)
+                .then(res => res.json())
+                .then(data => setTownChoices(data))
+        }
     }
 
     return (
         <Wrapper onSubmit={chooseCity}>
             <fieldset>
-                <label>Insérez</label>
-                <input
-                    type="text"
-                    value={townEntered}
-                    onChange={updateTown}
-                ></input>
-                <button type="submit">Ok</button>
+                <label>Destination prévue :</label>
+                <div>
+                    <input
+                        type="text"
+                        value={townEntered}
+                        onChange={updateTown}
+                    ></input>
+                    <button type="submit">Recherche</button>
+                </div>
             </fieldset>
             <Choices>
                 {
@@ -50,6 +53,26 @@ const Form = () => {
 }
 
 const Wrapper = styled.form`
+    fieldset {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        div {
+            display: flex;
+            justify-content: center;
+            input {
+                background-color: var(--c-lemon);
+                border: 1px solid var(--c-green);
+                border-radius: 5px;
+            }
+            button {
+                background-color: var(--c-lemon);
+                border: 1px solid var(--c-green);
+                border-radius: 5px;
+                padding: 7px;
+            }
+        }
+    }
 `
 
 const Choices = styled.div`

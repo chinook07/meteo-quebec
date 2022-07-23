@@ -1,35 +1,43 @@
 import { useContext } from "react";
 import styled from "styled-components";
 import { CityContext } from "../barebones/CityContext";
-import { startOfTomorrow, getDay, getDate, format, addDays } from 'date-fns'
-import { ca, fr, frCA } from "date-fns/locale";
+import { format, addDays } from 'date-fns'
+import { frCA } from "date-fns/locale";
+
+import DateRecap from "../littleComponents/DateRecap";
+import Calendar from "../littleComponents/Calendar";
 
 const Dates = () => {
-    const { todayDate } = useContext(CityContext)
-    console.log(todayDate);
+    const { todayDate, dateFromSelected, setDateFromSelected, dateToSelected, setDateToSelected, allDatesAvailable, setAllDatesAvailable } = useContext(CityContext)
     
     if (todayDate !== undefined) {
         const dayOfWeek = format(todayDate, "EEEE", {locale: frCA});
         const dateOfMonth = format(todayDate, "do", { locale: frCA });
-        const allDatesFrom = [];
+
         for (let i = 0; i < 16; i++) {
-            allDatesFrom[i] = (addDays(todayDate, i))
+            allDatesAvailable[i] = (format(addDays(todayDate, i), "EEEE dd", {locale: frCA}))
         }
-        console.log(allDatesFrom);
+
+        const updateDateFrom = (e) => setDateFromSelected(e.target.value);
+        const updateDateTo = (e) => setDateToSelected(e.target.value);
+
         return (
             <Wrapper>
-                <h2>Vous partez quand? Nous sommes {dayOfWeek} le {dateOfMonth}.</h2>
+                <h2>Sélectionnez vos dates de voyage.</h2>
                 <DeA>
                     <div>
                         <label htmlFor="dateFrom">Date de départ</label>
                         <select
                             id="dateFrom"
-                            type="date"
+                            value={dateFromSelected}
+                            onChange={updateDateFrom}
                         >
                             {
-                                allDatesFrom.map((item, index) => {
+                                allDatesAvailable.map((item, index) => {
                                     return (
-                                        <option key={index}>{format(item, "EEEE dd", {locale: frCA})}</option>
+                                        <option key={index}>
+                                            {item}
+                                        </option>
                                     )
                                 })
                             }
@@ -39,19 +47,23 @@ const Dates = () => {
                         <label htmlFor="dateTo">Date de fin</label>
                         <select
                             id="dateTo"
-                            type="date"
+                            value={dateToSelected}
+                            onChange={updateDateTo}
                         >
                             {
-                                allDatesFrom.map((item, index) => {
+                                allDatesAvailable.map((item, index) => {
                                     return (
-                                        <option key={index}>{format(item, "EEEE dd", {locale: frCA})}</option>
+                                        <option key={index}>
+                                            {item}
+                                        </option>
                                     )
                                 })
                             }
                         </select>
                     </div>
                 </DeA>
-                
+                <DateRecap />
+                <Calendar />
             </Wrapper>
         )
     } else {
@@ -64,7 +76,11 @@ const Dates = () => {
     
 }
 
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+    h2 {
+        text-align: center;
+    }
+`
 
 const DeA = styled.div`
     display: flex;
