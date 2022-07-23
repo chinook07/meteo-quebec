@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import MapOfQc from "./MapOfQc";
-import Form from "./Form";
 import Current from "./Current";
 import Dates from "./Dates";
 
@@ -12,7 +11,6 @@ const Main = () => {
         <Wrapper>
             <Current />
             <Dates />
-            {/* <Form /> */}
             {/* <MapOfQc /> */}
         </Wrapper>
     )

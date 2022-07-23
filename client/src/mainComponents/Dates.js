@@ -8,11 +8,11 @@ import DateRecap from "../littleComponents/DateRecap";
 import Calendar from "../littleComponents/Calendar";
 
 const Dates = () => {
-    const { todayDate, dateFromSelected, setDateFromSelected, dateToSelected, setDateToSelected, allDatesAvailable, setAllDatesAvailable } = useContext(CityContext)
+    const { todayDate, dateFromSelected, setDateFromSelected, dateToSelected, setDateToSelected, allDatesAvailable } = useContext(CityContext)
     
     if (todayDate !== undefined) {
-        const dayOfWeek = format(todayDate, "EEEE", {locale: frCA});
-        const dateOfMonth = format(todayDate, "do", { locale: frCA });
+        // const dayOfWeek = format(todayDate, "EEEE", {locale: frCA});
+        // const dateOfMonth = format(todayDate, "do", { locale: frCA });
 
         for (let i = 0; i < 16; i++) {
             allDatesAvailable[i] = (format(addDays(todayDate, i), "EEEE dd", {locale: frCA}))

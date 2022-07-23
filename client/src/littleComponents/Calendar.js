@@ -10,9 +10,7 @@ const Calendar = () => {
     const indexFrom = allDatesAvailable.indexOf(dateFromSelected);
     const indexTo = allDatesAvailable.indexOf(dateToSelected);
     const allDatesTravelled = allDatesAvailable.slice(indexFrom, indexTo + 1)
-    console.log(allDatesTravelled);
     const numOfDays = indexTo - indexFrom + 1;
-    console.log(numOfDays);
 
     if (numOfDays > 0) {
         return (
@@ -22,7 +20,7 @@ const Calendar = () => {
                         return (
                             <DayBlock key={index}>
                                 <div>Jour {index + 1} : {item}</div>
-                                <Form/>
+                                <Form dateNum={indexFrom + index}/>
                             </DayBlock>
                         )
                     })
