@@ -6,10 +6,16 @@ import ActualWeather from "../littleComponents/ActualWeather";
 const Form = ({dateNum}) => {
 
     const [townEntered, setTownEntered] = useState("");
-    const updateTown = (e) => setTownEntered(e.target.value);
+    const updateTown = (e) => {
+        setTownEntered(e.target.value);
+        setNoResultsFound(false);
+    };
     const [townChoices, setTownChoices] = useState([]);
+    const [todaysDestination, setTodaysDestination] = useState("")
 
     const [localWeatherGotten, setLocalWeatherGotten] = useState([]);
+
+    const [noResultsFound, setNoResultsFound] = useState(false);
 
     const chooseCity = (e) => {
         if (townEntered !== "") {
@@ -17,7 +23,13 @@ const Form = ({dateNum}) => {
             e.preventDefault();
             fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${townEntered}&limit=3&appid=c77a7a4b3db833e991269e38c96f8d5d&units=metric&lang=fr`)
                 .then(res => res.json())
-                .then(data => setTownChoices(data))
+                .then(data => {
+                    setTownChoices(data)
+                    if (data.length === 0) {
+                        console.log("none found");
+                        setNoResultsFound(true)
+                    }
+                })
         } else {
             e.preventDefault()
         }
@@ -26,14 +38,29 @@ const Form = ({dateNum}) => {
     const getLocalWeather = (coords) => {
         fetch(`https://api.weatherbit.io/v2.0/forecast/daily?lat=${coords.lat}&lon=${coords.lon}&key=efcab29fd72a499ebc37f605f0cdb1af&lang=fr`)
             .then(res => res.json())
-            .then(data => setLocalWeatherGotten(data.data))
+            .then(data => {
+                setTodaysDestination(data.city_name);
+                setLocalWeatherGotten(data.data)
+                setTownChoices([])
+            })
+    }
+
+    const add2ndCity = () => {
+        console.log("add 2nd city");
     }
 
     return (
         <Wrapper>
             <form onSubmit={chooseCity}>
                 <fieldset>
-                    <label>Destination prévue :</label>
+                    <DestinationPrevue>
+                        <label>Destination prévue :</label>
+                        {
+                            todaysDestination !== "" &&
+                            <span> {todaysDestination}</span>
+                        }
+                    </DestinationPrevue>
+                    
                     <div>
                         <input
                             type="text"
@@ -42,59 +69,84 @@ const Form = ({dateNum}) => {
                         ></input>
                         <button type="submit">Recherche</button>
                     </div>
+                    {
+                        noResultsFound &&
+                        <NoneFound>Aucun résultat</NoneFound>
+                    }
                 </fieldset>
             </form>
             
-            <Choices>
+            {
+                townChoices.length > 0 &&
+                <Choices> 
                 {
-                    townChoices.length > 0 &&
-                        townChoices.length === 1
-                            ? <div>{townChoices[0].name}</div>
-                            : townChoices.map((item, index) => {
-                                return (
-                                    <Choice key={index} onClick={() => getLocalWeather(item)}>
-                                        <City>{item.name}</City>
-                                        <State>{item.state}</State>
-                                        <Country>{item.country}</Country>
-                                    </Choice>
-                                )
-                                })
+                    townChoices.map((item, index) => {
+                        return (
+                            <Choice key={index} onClick={() => getLocalWeather(item)}>
+                                <City>{item.name}</City>
+                                <State>{item.state}</State>
+                                <Country>{item.country}</Country>
+                            </Choice>
+                        )
+                    })
                 }
-            </Choices>
+                </Choices>
+            }
             {
                 localWeatherGotten.length > 1 &&
-                    <ActualWeather localWeatherGotten={localWeatherGotten} dateNum={dateNum} />
+                    <div>
+                        <ActualWeather localWeatherGotten={localWeatherGotten} dateNum={dateNum} />
+                        <AddMoreCity onClick={add2ndCity}>Ajoutez une autre ville pour la même journée</AddMoreCity>
+                    </div>
             }
         </Wrapper>
     )
 }
 
 const Wrapper = styled.div`
-    fieldset {
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-        label {
-            margin-top: 10px;
-        }
-        div {
+    margin-top: 10px;
+    form {
+        border: 1px solid var(--c-green);
+        border-radius: 10px;
+        padding: 5px;
+        fieldset {
+            border: 0.5px solid var(--c-lemon);
+            border-radius: 10px;
             display: flex;
-            justify-content: center;
-            margin: 10px auto;
-            input {
-                background-color: var(--c-lemon);
-                border: 1px solid var(--c-green);
-                border-radius: 5px;
-                padding: 7px;
-            }
-            button {
-                background-color: var(--c-lemon);
-                border: 1px solid var(--c-green);
-                border-radius: 5px;
-                padding: 7px;
+            flex-direction: column;
+            padding: 10px;
+            text-align: center;
+            div {
+                display: flex;
+                justify-content: center;
+                margin: 10px auto;
+                input {
+                    background-color: var(--c-lemon);
+                    border: 1px solid var(--c-green);
+                    border-radius: 5px;
+                    padding: 7px;
+                }
+                button {
+                    background-color: var(--c-lemon);
+                    border: 1px solid var(--c-green);
+                    border-radius: 5px;
+                    padding: 7px;
+                }
             }
         }
     }
+    
+`
+
+const DestinationPrevue = styled.div`
+    span {
+        font-weight: bold;
+    }
+`
+
+const NoneFound = styled.div`
+    color: var(--c-dark);
+    font-weight: bold;
 `
 
 const Choices = styled.div`
@@ -120,6 +172,16 @@ const State = styled.p``
 
 const Country = styled.p`
     font-size: large;
+`
+
+const AddMoreCity = styled.button`
+    background-color: var(--c-lemon);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 10px auto;
+    padding: 8px;
 `
 
 export default Form;

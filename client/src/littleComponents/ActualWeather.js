@@ -4,7 +4,7 @@ import { format, compareAsc, parseISO } from "date-fns";
 import { frCA } from "date-fns/locale";
 
 const ActualWeather = ({ localWeatherGotten, dateNum }) => {
-    console.log(localWeatherGotten[dateNum]);
+    
     const dateHere = format(new Date(), "yyyy-MM-dd", {locale : frCA});
 
     const differenceInDay = compareAsc(parseISO(localWeatherGotten[0].valid_date), parseISO(dateHere));
@@ -13,6 +13,8 @@ const ActualWeather = ({ localWeatherGotten, dateNum }) => {
 
     if (differenceInDay === 1) { dateNum-- };
     if (differenceInDay === - 1) { dateNum++ };
+
+    console.log(localWeatherGotten[dateNum]);
     
     return (
         <Wrapper>
@@ -29,6 +31,7 @@ const ActualWeather = ({ localWeatherGotten, dateNum }) => {
 }
 
 const Wrapper = styled.div`
+    margin: 15px 0;
     text-align: center;
 `
 

@@ -33,6 +33,8 @@ const Calendar = () => {
 
 const Wrapper = styled.div``
 
-const DayBlock = styled.div``
+const DayBlock = styled.div`
+    margin-top: 15px;
+`
 
 export default Calendar;
