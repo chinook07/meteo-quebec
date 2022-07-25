@@ -8,9 +8,9 @@ const CityContextProvider = ({ children }) => {
     const [localWeather, setLocalWeather] = useState({})
     const [location, setLocation] = useState({});
     const [todayDate, setTodayDate] = useState();
+    const [allDatesAvailable, setAllDatesAvailable] = useState([]);
     const [dateFromSelected, setDateFromSelected] = useState("");
     const [dateToSelected, setDateToSelected] = useState("");
-    const [allDatesAvailable, setAllDatesAvailable] = useState([]);
     const [ready, setReady] = useState(false);
 
     useEffect(() => {

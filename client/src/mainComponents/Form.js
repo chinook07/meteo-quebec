@@ -45,9 +45,7 @@ const Form = ({dateNum}) => {
             })
     }
 
-    const add2ndCity = () => {
-        console.log("add 2nd city");
-    }
+    
 
     return (
         <Wrapper>
@@ -96,7 +94,7 @@ const Form = ({dateNum}) => {
                 localWeatherGotten.length > 1 &&
                     <div>
                         <ActualWeather localWeatherGotten={localWeatherGotten} dateNum={dateNum} />
-                        <AddMoreCity onClick={add2ndCity}>Ajoutez une autre ville pour la même journée</AddMoreCity>
+                        
                     </div>
             }
         </Wrapper>
@@ -174,14 +172,6 @@ const Country = styled.p`
     font-size: large;
 `
 
-const AddMoreCity = styled.button`
-    background-color: var(--c-lemon);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: block;
-    margin: 10px auto;
-    padding: 8px;
-`
+
 
 export default Form;

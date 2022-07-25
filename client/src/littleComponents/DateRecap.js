@@ -3,7 +3,12 @@ import styled from "styled-components";
 import { CityContext } from "../barebones/CityContext";
 
 const DateRecap = () => {
-    const { dateFromSelected, dateToSelected, allDatesAvailable } = useContext(CityContext);
+    const { dateFromSelected, setDateFromSelected, dateToSelected, setDateToSelected, allDatesAvailable } = useContext(CityContext);
+
+    const clearDates = () => {
+        setDateFromSelected("");
+        setDateToSelected("");
+    }
 
     if (dateFromSelected !== "" && dateToSelected !== "") {
         if (allDatesAvailable.indexOf(dateFromSelected) > allDatesAvailable.indexOf(dateToSelected)) {
@@ -13,7 +18,8 @@ const DateRecap = () => {
         }
         return (
             <Wrapper>
-                Prévisions météo pour votre voyage du {dateFromSelected} au {dateToSelected} :
+                <div>Prévisions météo pour votre voyage du {dateFromSelected} au {dateToSelected} :</div>
+                <button onClick={clearDates}>Clear</button>
             </Wrapper>
         )
     }
