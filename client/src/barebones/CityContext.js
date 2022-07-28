@@ -11,6 +11,7 @@ const CityContextProvider = ({ children }) => {
     const [allDatesAvailable, setAllDatesAvailable] = useState([]);
     const [dateFromSelected, setDateFromSelected] = useState("");
     const [dateToSelected, setDateToSelected] = useState("");
+    const [entireForecast, setEntireForecast] = useState([]);
     const [ready, setReady] = useState(false);
 
     useEffect(() => {
@@ -33,6 +34,8 @@ const CityContextProvider = ({ children }) => {
                 setDateToSelected,
                 allDatesAvailable,
                 setAllDatesAvailable,
+                entireForecast,
+                setEntireForecast,
                 ready,
                 setReady
             }}

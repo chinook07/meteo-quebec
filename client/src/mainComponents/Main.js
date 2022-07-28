@@ -2,6 +2,7 @@
 import MapOfQc from "./MapOfQc";
 import Current from "./Current";
 import Dates from "./Dates";
+import Summary from "./Summary";
 
 import styled from "styled-components";
 
@@ -12,6 +13,7 @@ const Main = () => {
             <Current />
             <Dates />
             {/* <MapOfQc /> */}
+            <Summary />
         </Wrapper>
     )
 }

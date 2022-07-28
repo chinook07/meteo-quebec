@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import styled from "styled-components";
+import { CityContext } from "../barebones/CityContext";
 
 import ActualWeather from "../littleComponents/ActualWeather";
 
-const Form = ({dateNum}) => {
+const Form = ({ dateNum }) => {
+    
+    const { entireForecast, setEntireForecast } = useContext(CityContext);
+    console.log(entireForecast);
 
     const [townEntered, setTownEntered] = useState("");
     const updateTown = (e) => {
@@ -40,8 +44,9 @@ const Form = ({dateNum}) => {
             .then(res => res.json())
             .then(data => {
                 setTodaysDestination(data.city_name);
-                setLocalWeatherGotten(data.data)
-                setTownChoices([])
+                setLocalWeatherGotten(data.data);
+                setTownChoices([]);
+                setEntireForecast((prev) => [...prev, {city: data.city_name, forecast: data.data}])
             })
     }
 

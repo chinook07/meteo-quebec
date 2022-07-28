@@ -20,14 +20,6 @@ const Dates = () => {
             allDatesAvailable[i] = (format(addDays(todayDate, i), "EEEE dd", {locale: frCA}))
         }
 
-        // if (dateFromSelected === "" && dateToSelected === "") {
-        //     setDateFromSelected(allDatesAvailable[0]);
-        //     setDateToSelected(allDatesAvailable[0]);
-        // }
-
-        const updateDateFrom = (e) => setDateFromSelected(e.target.value);
-        const updateDateTo = (e) => setDateToSelected(e.target.value);
-
         const updateDate = (date) => {
             if (dateFromSelected !== "" && dateToSelected === "") {
                 if (allDatesAvailable.indexOf(dateFromSelected) > allDatesAvailable.indexOf(date)) {
@@ -49,49 +41,21 @@ const Dates = () => {
                 <DeA>
                     {
                         allDatesAvailable.map((item, index) => {
+                            
                             return (
-                                <div key={index} onClick={() => updateDate(item)}>
+                                <div
+                                    key={index}
+                                    className={`
+                                        ${dateFromSelected === item || dateToSelected === item ? "selected" : ""}
+                                        ${allDatesAvailable.indexOf(item) > allDatesAvailable.indexOf(dateFromSelected) && allDatesAvailable.indexOf(item) < allDatesAvailable.indexOf(dateToSelected)? "between" : ""}
+                                    `}
+                                    onClick={() => updateDate(item)}
+                                >
                                     {item}
                                 </div>
                             )
                         })
                     }
-                    {/* <div>
-                        <label htmlFor="dateFrom">Date de départ</label>
-                        <select
-                            id="dateFrom"
-                            value={dateFromSelected}
-                            onChange={updateDateFrom}
-                        >
-                            {
-                                allDatesAvailable.map((item, index) => {
-                                    return (
-                                        <option key={index}>
-                                            {item}
-                                        </option>
-                                    )
-                                })
-                            }
-                        </select>
-                    </div>
-                    <div>
-                        <label htmlFor="dateTo">Date de fin</label>
-                        <select
-                            id="dateTo"
-                            value={dateToSelected}
-                            onChange={updateDateTo}
-                        >
-                            {
-                                allDatesAvailable.map((item, index) => {
-                                    return (
-                                        <option key={index}>
-                                            {item}
-                                        </option>
-                                    )
-                                })
-                            }
-                        </select>
-                    </div> */}
                 </DeA>
                 {
                     timeTravelError &&
@@ -108,7 +72,6 @@ const Dates = () => {
             </Wrapper>
         )
     }
-    
 }
 
 const Wrapper = styled.div`
@@ -118,21 +81,6 @@ const Wrapper = styled.div`
 `
 
 const DeA = styled.div`
-    /* display: flex;
-    justify-content: space-evenly;
-    padding: 15px; */
-    /* div {
-        display: flex;
-        flex-direction: column;
-        label {
-            padding: 5px;
-            text-align: center;
-        }
-        select {
-            padding: 3px;
-        }
-    } */
-    
     border: 2px solid var(--c-green);
     display: flex;
     flex-wrap: wrap;
@@ -147,6 +95,14 @@ const DeA = styled.div`
             background-color: var(--c-green);
             color: var(--c-light);
         }
+    }
+    .selected {
+        background-color: var(--c-dark);
+        color: var(--c-light);
+    }
+    .between {
+        background-color: var(--c-lemon);
+        color: var(--c-dark);
     }
 `
 
